@@ -35,6 +35,8 @@ public class DownloadManager {
     @FXML
     private Hyperlink operaLink;
 
+    private DownloadThread currentDownloadThread;
+
 
     public static void launchFirefox(){
         try{
@@ -145,9 +147,25 @@ public class DownloadManager {
         FileInfo file = new FileInfo((index+1) + "", filename, url, status, action, path, "0");
         this.index = this.index+1;
         DownloadThread thread = new DownloadThread(file, this);
+        this.currentDownloadThread = thread;
         this.tableView.getItems().add(Integer.parseInt(file.getIndex())-1, file);
         thread.start();
     }
+
+    @FXML
+    void pauseButtonClicked(ActionEvent event) {
+        if (currentDownloadThread != null) {
+            currentDownloadThread.pauseDownload();
+        }
+    }
+
+    @FXML
+    void resumeButtonClicked(ActionEvent event) {
+        if (currentDownloadThread != null) {
+            currentDownloadThread.resumeDownload();
+        }
+    }
+
 
     @FXML
     void removeButtonClicked(ActionEvent event) {

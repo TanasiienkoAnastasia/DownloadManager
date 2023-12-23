@@ -32,8 +32,11 @@
             </Button>
          </bottom>
          <center>
-            <TextField fx:id="urlTextField" alignment="CENTER" prefHeight="26.0" prefWidth="919.0" promptText="Enter download URL here ....." BorderPane.alignment="CENTER" />
+            <TextField fx:id="urlTextField" alignment="CENTER" prefHeight="28.0" prefWidth="752.0" promptText="Enter download URL here ....." BorderPane.alignment="CENTER" />
          </center>
+         <right>
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#pauseButtonClicked" style="-fx-background-color: #ec9317;" text="Pause" BorderPane.alignment="CENTER" />
+         </right>
       </BorderPane>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <TableView fx:id="tableView" layoutX="8.0" layoutY="235.0" prefHeight="359.0" prefWidth="876.0">
@@ -72,5 +75,6 @@
          </font>
       </Hyperlink>
       <Button layoutX="11.0" layoutY="640.0" mnemonicParsing="false" onAction="#changeLocationButtonClicked" prefHeight="26.0" prefWidth="243.0" style="-fx-background-color: #CF9FFF;" text="Change location button" />
+      <Button fx:id="btnResume" layoutX="835.0" layoutY="133.0" mnemonicParsing="false" onAction="#resumeButtonClicked" text="Resume" />
    </children>
 </AnchorPane>
