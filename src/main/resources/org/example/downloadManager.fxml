@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="703.0" prefWidth="892.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.DownloadManager">
    <children>
-      <BorderPane layoutX="28.8" layoutY="51.2" prefHeight="159.0" prefWidth="810.0" AnchorPane.bottomAnchor="475.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="51.0">
+      <BorderPane layoutY="51.2" prefHeight="177.0" prefWidth="820.0" AnchorPane.bottomAnchor="475.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="51.0">
          <top>
             <Text fill="#e11111" stroke="#d12121" strokeType="OUTSIDE" strokeWidth="0.0" text="DOWNLOAD MANAGER" underline="true" wrappingWidth="394.39997577667236" BorderPane.alignment="CENTER">
                <font>
@@ -32,27 +32,26 @@
             </Button>
          </bottom>
          <center>
-            <TextField fx:id="urlTextField" alignment="CENTER" prefHeight="28.0" prefWidth="752.0" promptText="Enter download URL here ....." BorderPane.alignment="CENTER" />
+            <TextField fx:id="urlTextField" alignment="CENTER" prefHeight="28.0" prefWidth="770.0" promptText="Enter download URL here ....." BorderPane.alignment="CENTER" />
          </center>
          <right>
             <Button fx:id="btnPause" mnemonicParsing="false" onAction="#pauseButtonClicked" style="-fx-background-color: #ec9317;" text="Pause" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <TableView fx:id="tableView" layoutX="8.0" layoutY="235.0" prefHeight="359.0" prefWidth="876.0">
+      <TableView fx:id="tableView" layoutX="8.0" layoutY="235.0" prefHeight="359.0" prefWidth="875.0">
         <columns>
           <TableColumn prefWidth="75.0" text="S.NO" />
           <TableColumn prefWidth="75.0" text="File Name" />
             <TableColumn prefWidth="201.59999084472656" text="File URL" />
-            <TableColumn prefWidth="187.99993896484375" text="Status" />
-            <TableColumn prefWidth="145.60003662109375" text="\% Completed" />
-            <TableColumn prefWidth="75.0" text="Action" />
+            <TableColumn prefWidth="120.80001831054688" text="Status" />
+            <TableColumn prefWidth="179.20001220703125" text="\% Completed" />
+            <TableColumn prefWidth="169.599853515625" text="Action" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button layoutX="8.0" layoutY="605.0" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="26.0" prefWidth="250.0" style="-fx-background-color: #E56E94;" text="Remove download from table" textOverrun="CLIP" />
       <Hyperlink fx:id="googleLink" layoutX="780.0" layoutY="643.0" onAction="#openGoogleLink" text="Google" textFill="#2cc457">
          <font>
             <Font size="21.0" />
@@ -75,6 +74,10 @@
          </font>
       </Hyperlink>
       <Button layoutX="11.0" layoutY="640.0" mnemonicParsing="false" onAction="#changeLocationButtonClicked" prefHeight="26.0" prefWidth="243.0" style="-fx-background-color: #CF9FFF;" text="Change location button" />
-      <Button fx:id="btnResume" layoutX="835.0" layoutY="133.0" mnemonicParsing="false" onAction="#resumeButtonClicked" text="Resume" />
+      <Button fx:id="btnResume" layoutX="813.0" layoutY="133.0" mnemonicParsing="false" onAction="#resumeButtonClicked" style="-fx-background-color: #ffb6c1;" text="Resume" />
+      <Button layoutX="288.0" layoutY="605.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaFirefox" style="-fx-background-color: #FFD580;" text="Download ur via firefox" />
+      <Button layoutX="591.0" layoutY="605.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaIE" style="-fx-background-color: #67B7D1;" text="Download url via ie" />
+      <Button layoutX="714.0" layoutY="605.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaGoogle" style="-fx-background-color: #90EE90;" text="Download url via google" />
+      <Button layoutX="438.0" layoutY="605.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaOpera" style="-fx-background-color: #FF7F7F;" text="Download url via opera" />
    </children>
 </AnchorPane>

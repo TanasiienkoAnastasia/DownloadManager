@@ -12,8 +12,13 @@ import views.FileTransferLogin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class DownloadManager {
 
@@ -38,7 +43,7 @@ public class DownloadManager {
     private DownloadThread currentDownloadThread;
 
 
-    public static void launchFirefox(){
+    public void launchFirefox(){
         try{
             System.out.println("Launching Firefox");
             String commandArr[] = {"\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\""};
@@ -49,6 +54,14 @@ public class DownloadManager {
         {
             ie.printStackTrace();
         }
+    }
+
+    public long getTotalSizeOfFiles() {
+        long totalSize = 0;
+        for (FileInfo file : tableView.getItems()) {
+            totalSize += file.getFilesize();
+        }
+        return totalSize;
     }
 
     @FXML
@@ -62,6 +75,7 @@ public class DownloadManager {
         else
             System.out.println("Invalid Operating System");
     }
+
 
 
     public static void launchGoogle(){
@@ -137,19 +151,108 @@ public class DownloadManager {
     }
 
     public int index = 0;
+
+    private long getFileSize(String fileUrl) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(fileUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("HEAD");
+            conn.getInputStream();
+            return conn.getContentLengthLong();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
+
+    // Додайте метод для отримання типу файлу на основі імені файлу
+    private String getFileType(String filename) {
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex > 0) {
+            return filename.substring(dotIndex + 1);
+        }
+        return "Unknown";
+    }
+
+    // Додайте метод для отримання поточної дати у форматі "dd/MM/yyyy HH:mm:ss"
+    private String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date currentDate = new Date();
+        return dateFormat.format(currentDate);
+    }
     @FXML
     void downloadButtonClicked(ActionEvent event) {
         String url = urlTextField.getText().trim();
-        String filename = url.substring(url.lastIndexOf("/")+1);
+        String filename = url.substring(url.lastIndexOf("/") + 1);
         String status = "STARTING";
         String action = "OPEN";
         String path = AppConfig.DOWNLOAD_PATH + File.separator + filename;
-        FileInfo file = new FileInfo((index+1) + "", filename, url, status, action, path, "0");
-        this.index = this.index+1;
+
+        long filesize = getFileSize(url); // Отримання розміру файлу
+
+        // Отримайте тип файлу та поточну дату
+        String fileType = getFileType(filename);
+        String downloadDate = getCurrentDate();
+
+        FileInfo file = new FileInfo((index + 1) + "", filename, url, status, action, path, "0", filesize);
+        file.setFileType(fileType);
+        file.setDownloadDate(downloadDate);
+
+        this.index = this.index + 1;
         DownloadThread thread = new DownloadThread(file, this);
+        thread.setDownloadSpeed(1024*1024);
         this.currentDownloadThread = thread;
-        this.tableView.getItems().add(Integer.parseInt(file.getIndex())-1, file);
+        this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
         thread.start();
+    }
+
+    @FXML
+    void btnDownloadLinkViaFirefox(ActionEvent event) {
+        String url = urlTextField.getText().trim();
+        try {
+            String command = "\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\" " + url;
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void btnDownloadLinkViaGoogle(ActionEvent event) {
+        String url = urlTextField.getText().trim();
+        try {
+            String command = "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"" + url;
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void btnDownloadLinkViaIE(ActionEvent event) {
+        String url = urlTextField.getText().trim();
+        try {
+            String command = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"" + url;
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void btnDownloadLinkViaOpera(ActionEvent event) {
+        String url = urlTextField.getText().trim();
+        try {
+            String command = "\"C:\\Users\\shepe\\AppData\\Local\\Programs\\Opera\\launcher.exe\"" + url;
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -167,12 +270,7 @@ public class DownloadManager {
     }
 
 
-    @FXML
-    void removeButtonClicked(ActionEvent event) {
-        tableView.getItems().removeAll(
-                tableView.getSelectionModel().getSelectedItems()
-        );
-    }
+  
 
     @FXML
     void changeLocationButtonClicked(ActionEvent event) {
@@ -202,7 +300,16 @@ public class DownloadManager {
             System.err.println("Error parsing 'index' value: " + metaFile.getIndex());
         }
         System.out.println("_________________________");
+        tableView.refresh();
     }
+
+    private String humanReadableByteCountBin(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(1024));
+        char pre = "KMGTPE".charAt(exp - 1);
+        return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
+    }
+
 
     @FXML
     public void initialize() {
@@ -240,5 +347,22 @@ public class DownloadManager {
         action.setCellValueFactory(p -> {
             return p.getValue().actionProperty();
         });
+
+        TableColumn<FileInfo, String> fileSizeColumn = new TableColumn<>("File Size");
+        fileSizeColumn.setCellValueFactory(p -> {
+            long size = p.getValue().getFilesize();
+            String sizeString = size >= 0 ? humanReadableByteCountBin(size) : "Unknown";
+            return new SimpleStringProperty(sizeString);
+        });
+
+        this.tableView.getColumns().add(fileSizeColumn);
+
+        TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>("File Type");
+        fileTypeColumn.setCellValueFactory(p -> p.getValue().fileTypeProperty());
+
+        TableColumn<FileInfo, String> downloadDateColumn = new TableColumn<>("Date");
+        downloadDateColumn.setCellValueFactory(p -> p.getValue().downloadDateProperty());
+
+        this.tableView.getColumns().addAll(fileTypeColumn, downloadDateColumn);
     }
 }

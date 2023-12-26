@@ -11,6 +11,11 @@ import java.net.URLConnection;
 public class DownloadThread extends Thread {
 
     public FileInfo file;
+    private static final int MAX_DOWNLOAD_SPEED = 1024 * 1024;
+    private long downloadSpeedLimit = Long.MAX_VALUE;
+    private long lastUpdateTime;
+    private long bytesDownloadedSinceLastUpdate;
+    private volatile boolean downloadFailed = false;
     DownloadManager manager;
 
     private volatile boolean paused = false;
@@ -26,6 +31,15 @@ public class DownloadThread extends Thread {
 
     public void resumeDownload() {
         paused = false;
+    }
+
+    public void setDownloadSpeed(long speedLimit) {
+        if (speedLimit > 0) {
+            downloadSpeedLimit = speedLimit;
+        } else {
+            // Якщо передане обмеження є від'ємним або нульовим, встановіть без обмеження
+            downloadSpeedLimit = Long.MAX_VALUE;
+        }
     }
 
     @Override
@@ -46,6 +60,7 @@ public class DownloadThread extends Thread {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(url.openStream());
             FileOutputStream fos = new FileOutputStream(this.file.getPath());
             byte data[] = new byte[1024];
+            long startTime = System.currentTimeMillis();
 
             while (true) {
                 if (paused) {
@@ -70,7 +85,27 @@ public class DownloadThread extends Thread {
                     System.out.println(per);
                     this.file.setPer(per + "");
                     this.manager.updateUI(file);
-                }
+
+                    long currentTime = System.currentTimeMillis();
+                    long elapsedTime = currentTime - startTime;
+                    bytesDownloadedSinceLastUpdate += countByte;
+
+                    if (elapsedTime >= 1000) { // Перевірка кожну секунду
+                        long averageSpeed = bytesDownloadedSinceLastUpdate / elapsedTime;
+                        if (averageSpeed > downloadSpeedLimit) {
+                            try {
+                                long sleepTime = (bytesDownloadedSinceLastUpdate / downloadSpeedLimit) - elapsedTime;
+                                if (sleepTime > 0) {
+                                    sleep(sleepTime);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        bytesDownloadedSinceLastUpdate = 0;
+                        startTime = currentTime;
+                    }
+                    }
             }
 
             fos.close();
@@ -80,6 +115,7 @@ public class DownloadThread extends Thread {
             this.file.setStatus("DONE");
         } catch (IOException e) {
             this.file.setStatus("Failed");
+            this.downloadFailed = true;
             System.out.println("Downloading error");
             e.printStackTrace();
         }

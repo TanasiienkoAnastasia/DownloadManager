@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegistrationForm extends JDialog {
     private JTextField tfName;
@@ -46,6 +48,20 @@ public class RegistrationForm extends JDialog {
         setVisible(true);
     }
 
+
+
+    public static boolean isPhoneNumberInRightFormat(String phoneNumber, String example) {
+        Pattern regex = Pattern.compile(example);
+        Matcher matcher = regex.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public static boolean isEmailInRightFormat(String address, String example) {
+        Pattern regex = Pattern.compile(example);
+        Matcher matcher = regex.matcher(address);
+        return matcher.matches();
+    }
+
     private void registerUser() {
         String name = tfName.getText();
         String email = tfEmail.getText();
@@ -53,6 +69,8 @@ public class RegistrationForm extends JDialog {
         String address = tfAddress.getText();
         String password = String.valueOf(pfPassword.getPassword());
         String confirmPassword = String.valueOf(pfConfirmPassword.getPassword());
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        String phonePattern = "^\\+380\\d{9}$";
 
         if(name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -70,6 +88,22 @@ public class RegistrationForm extends JDialog {
             return;
         }
 
+        if(!isEmailInRightFormat(email, emailPattern)){
+            JOptionPane.showMessageDialog(this,
+                    "Please enter another email",
+                    "Try again",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(!isPhoneNumberInRightFormat(phone, phonePattern)){
+            JOptionPane.showMessageDialog(this,
+                    "Please enter another phone number",
+                    "Try again",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         user = addUserToDatabase(name, email, phone, address, password);
 
         if(user != null){
@@ -80,6 +114,9 @@ public class RegistrationForm extends JDialog {
                     "Try again",
                     JOptionPane.ERROR_MESSAGE);
         }
+
+
+
     }
 
     public User user;

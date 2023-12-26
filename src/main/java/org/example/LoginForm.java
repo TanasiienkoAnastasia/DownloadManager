@@ -75,6 +75,7 @@ public class LoginForm extends JDialog {
         setVisible(true);
     }
 
+
     public User user;
     private User getAuthenticatedUser(String email, String password) {
         User user = null;
