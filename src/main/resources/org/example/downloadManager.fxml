@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="755.0" prefWidth="892.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.DownloadManager">
+<AnchorPane prefHeight="905.0" prefWidth="1340.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.DownloadManager">
    <children>
-      <Button fx:id="btnPause" layoutX="728.0" layoutY="136.0" mnemonicParsing="false" onAction="#pauseButtonClicked" prefHeight="26.0" prefWidth="58.0" style="-fx-background-color: #ec9317;" text="Pause" />
-      <Button fx:id="btnResume" layoutX="728.0" layoutY="98.0" mnemonicParsing="false" onAction="#resumeButtonClicked" style="-fx-background-color: #ffb6c1;" text="Resume" />
-      <BorderPane layoutX="17.0" layoutY="61.0" prefHeight="164.0" prefWidth="717.0" AnchorPane.bottomAnchor="556.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="158.0" AnchorPane.topAnchor="61.0">
+      <Button fx:id="btnPause" layoutX="786.0" layoutY="134.0" mnemonicParsing="false" onAction="#pauseButtonClicked" prefHeight="26.0" prefWidth="58.0" style="-fx-background-color: #ec9317;" text="Pause" />
+      <Button fx:id="btnResume" layoutX="786.0" layoutY="95.0" mnemonicParsing="false" onAction="#resumeButtonClicked" style="-fx-background-color: #ffb6c1;" text="Resume" />
+      <BorderPane layoutX="14.0" layoutY="31.0" prefHeight="155.0" prefWidth="766.0" AnchorPane.bottomAnchor="721.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="562.8000000000001" AnchorPane.topAnchor="31.0">
          <top>
             <Text fill="#e11111" stroke="#d12121" strokeType="OUTSIDE" strokeWidth="0.0" text="DOWNLOAD MANAGER" underline="true" wrappingWidth="394.39997577667236" BorderPane.alignment="CENTER">
                <font>
@@ -60,5 +60,10 @@
             <fx:include source="openBrowsers.fxml" />
          </right>
       </BorderPane>
+       <BorderPane layoutX="14.0" layoutY="706.0" prefHeight="130.0" prefWidth="422.0">
+           <right>
+               <fx:include source="pauseResume.fxml" />
+           </right>
+       </BorderPane>
    </children>
 </AnchorPane>
