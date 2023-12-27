@@ -1,8 +1,8 @@
-package org.example.DownloadManager.Command.Commands;
+package org.example.DownloadManager.CommandOpenBrowsers.Commands;
 
 
-import org.example.DownloadManager.Command.CommandInterface.Command;
-import org.example.DownloadManager.Command.ReceiverClasses.DownloadManagerFileSystemReceiver;
+import org.example.DownloadManager.CommandOpenBrowsers.CommandInterface.Command;
+import org.example.DownloadManager.CommandOpenBrowsers.ReceiverClasses.DownloadManagerFileSystemReceiver;
 
 public class LaunchGoogleCommand implements Command {
     private DownloadManagerFileSystemReceiver downloadManager;

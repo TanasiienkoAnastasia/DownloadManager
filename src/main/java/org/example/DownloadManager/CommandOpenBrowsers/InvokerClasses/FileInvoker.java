@@ -1,6 +1,6 @@
-package org.example.DownloadManager.Command.InvokerClasses;
+package org.example.DownloadManager.CommandOpenBrowsers.InvokerClasses;
 
-import org.example.DownloadManager.Command.CommandInterface.Command;
+import org.example.DownloadManager.CommandOpenBrowsers.CommandInterface.Command;
 
 
 public class FileInvoker {

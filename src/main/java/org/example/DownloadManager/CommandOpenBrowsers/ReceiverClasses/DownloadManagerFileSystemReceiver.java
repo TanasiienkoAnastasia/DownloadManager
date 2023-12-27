@@ -1,4 +1,4 @@
-package org.example.DownloadManager.Command.ReceiverClasses;
+package org.example.DownloadManager.CommandOpenBrowsers.ReceiverClasses;
 
 
 import javafx.fxml.FXML;

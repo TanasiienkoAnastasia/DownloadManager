@@ -1,14 +1,14 @@
-package org.example.DownloadManager.Command;
+package org.example.DownloadManager.CommandOpenBrowsers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
-import org.example.DownloadManager.Command.Commands.LaunchFirefoxCommand;
-import org.example.DownloadManager.Command.Commands.LaunchGoogleCommand;
-import org.example.DownloadManager.Command.Commands.LaunchInternetExplorerCommand;
-import org.example.DownloadManager.Command.Commands.LaunchOperaCommand;
-import org.example.DownloadManager.Command.InvokerClasses.FileInvoker;
-import org.example.DownloadManager.Command.ReceiverClasses.DownloadManagerFileSystemReceiver;
+import org.example.DownloadManager.CommandOpenBrowsers.Commands.LaunchFirefoxCommand;
+import org.example.DownloadManager.CommandOpenBrowsers.Commands.LaunchGoogleCommand;
+import org.example.DownloadManager.CommandOpenBrowsers.Commands.LaunchInternetExplorerCommand;
+import org.example.DownloadManager.CommandOpenBrowsers.Commands.LaunchOperaCommand;
+import org.example.DownloadManager.CommandOpenBrowsers.InvokerClasses.FileInvoker;
+import org.example.DownloadManager.CommandOpenBrowsers.ReceiverClasses.DownloadManagerFileSystemReceiver;
 
 
 import java.io.IOException;
