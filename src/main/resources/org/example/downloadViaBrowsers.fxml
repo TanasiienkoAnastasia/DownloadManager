@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="103.0" prefWidth="676.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.DownloadManager">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Button layoutX="22.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaFirefox" style="-fx-background-color: #FFD580;" text="Download ur via firefox" />
+      <Button layoutX="338.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaIE" style="-fx-background-color: #67B7D1;" text="Download url via ie" />
+      <Button layoutX="479.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaGoogle" style="-fx-background-color: #90EE90;" text="Download url via google" />
+      <Button layoutX="181.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaOpera" style="-fx-background-color: #FF7F7F;" text="Download url via opera" />
+   </children>
+</AnchorPane>

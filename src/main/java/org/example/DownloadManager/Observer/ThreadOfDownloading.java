@@ -1,4 +1,4 @@
-package org.example.DownloadManager;
+package org.example.DownloadManager.Observer;
 
 import org.example.DownloadManager.DownloadManager;
 import org.example.DownloadManager.models.FileInfo;
@@ -9,21 +9,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class DownloadThread extends Thread {
-
+public class ThreadOfDownloading extends Thread{
     public FileInfo file;
     private static final int MAX_DOWNLOAD_SPEED = 1024 * 1024;
     private long downloadSpeedLimit = Long.MAX_VALUE;
     private long lastUpdateTime;
     private long bytesDownloadedSinceLastUpdate;
     private volatile boolean downloadFailed = false;
-    DownloadManager manager;
+    DownloadController controller;
 
     private volatile boolean paused = false;
 
-    public DownloadThread(FileInfo file, DownloadManager manager) {
+    public ThreadOfDownloading(FileInfo file, DownloadController controller) {
         this.file = file;
-        this.manager = manager;
+        this.controller = controller;
     }
 
     public void pauseDownload() {
@@ -46,7 +45,7 @@ public class DownloadThread extends Thread {
     @Override
     public void run() {
         this.file.setStatus("DOWNLOADING");
-        this.manager.updateUI(this.file);
+        this.controller.updateUI(this.file);
 
         try {
             URL url = new URL(this.file.getUrl());
@@ -85,7 +84,7 @@ public class DownloadThread extends Thread {
                     per = (byteSum / fileSize * 100);
                     System.out.println(per);
                     this.file.setPer(per + "");
-                    this.manager.updateUI(file);
+                    this.controller.updateUI(file);
 
                     long currentTime = System.currentTimeMillis();
                     long elapsedTime = currentTime - startTime;
@@ -106,7 +105,7 @@ public class DownloadThread extends Thread {
                         bytesDownloadedSinceLastUpdate = 0;
                         startTime = currentTime;
                     }
-                    }
+                }
             }
 
             fos.close();
@@ -120,6 +119,6 @@ public class DownloadThread extends Thread {
             System.out.println("Downloading error");
             e.printStackTrace();
         }
-        this.manager.updateUI(this.file);
+        this.controller.updateUI(this.file);
     }
 }

@@ -1,158 +1,31 @@
-package org.example.DownloadManager;
+package org.example.DownloadManager.Observer;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import org.example.DownloadManager.AppConfig;
+import org.example.DownloadManager.DownloadThread;
 import org.example.DownloadManager.models.FileInfo;
-import views.FileTransferLogin;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-public class DownloadManager {
-
-
-    @FXML
-    private Button openBrowsers;
-    @FXML
-    private TableView<FileInfo> tableView;
+public class DownloadController {
 
     @FXML
     private TextField urlTextField;
-
+    private ThreadOfDownloading currentDownloadThread;
     @FXML
-    private Hyperlink firefoxLink;
-
-    @FXML
-    private Hyperlink googleLink;
-
-    @FXML
-    private Hyperlink internetExplorerLink;
-
-    @FXML
-    private Hyperlink operaLink;
-
-    private DownloadThread currentDownloadThread;
+    private TableView<FileInfo> tableView;
 
 
-    public void launchFirefox(){
-        try{
-            System.out.println("Launching Firefox");
-            String commandArr[] = {"\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\""};
-            Runtime runtimeObj = Runtime.getRuntime();
-            runtimeObj.exec(commandArr);
-        }
-        catch (IOException ie)
-        {
-            ie.printStackTrace();
-        }
-    }
-
-    public long getTotalSizeOfFiles() {
-        long totalSize = 0;
-        for (FileInfo file : tableView.getItems()) {
-            totalSize += file.getFilesize();
-        }
-        return totalSize;
-    }
-
-    @FXML
-    void openFirefoxLink(ActionEvent event) throws URISyntaxException, IOException{
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name : " + osName);
-
-        if (osName.startsWith("windows")){
-            launchFirefox();
-        }
-        else
-            System.out.println("Invalid Operating System");
-    }
-
-
-
-    public static void launchGoogle(){
-        try{
-            System.out.println("Launching Google");
-            String commandArr[] = {"\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\""};
-            Runtime runtimeObj = Runtime.getRuntime();
-            runtimeObj.exec(commandArr);
-        }
-        catch (IOException ie)
-        {
-            ie.printStackTrace();
-        }
-    }
-    @FXML
-    void openGoogleLink(ActionEvent event) throws URISyntaxException, IOException {
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name : " + osName);
-
-        if (osName.startsWith("windows")){
-            launchGoogle();
-        }
-        else
-            System.out.println("Invalid Operating System");
-    }
-
-    public static void launchIntenetExplorer(){
-        try{
-            System.out.println("Launching Internet Explorer");
-            String commandArr[] = {"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"};
-            Runtime runtimeObj = Runtime.getRuntime();
-            runtimeObj.exec(commandArr);
-        }
-        catch (IOException ie)
-        {
-            ie.printStackTrace();
-        }
-    }
-    @FXML
-    void openInternetExplorerLink(ActionEvent event) throws URISyntaxException, IOException {
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name : " + osName);
-
-        if (osName.startsWith("windows")){
-            launchIntenetExplorer();
-        }
-        else
-            System.out.println("Invalid Operating System");
-    }
-
-    public static void launchOpera(){
-        try{
-            System.out.println("Launching opera");
-            String commandArr[] = {"C:\\Users\\shepe\\AppData\\Local\\Programs\\Opera\\launcher.exe"};
-            Runtime runtimeObj = Runtime.getRuntime();
-            runtimeObj.exec(commandArr);
-        }
-        catch (IOException ie)
-        {
-            ie.printStackTrace();
-        }
-    }
-    @FXML
-    void openOperaLink(ActionEvent event) throws URISyntaxException, IOException {
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name : " + osName);
-
-        if (osName.startsWith("windows")){
-            launchOpera();
-        }
-        else
-            System.out.println("Invalid Operating System");
-    }
 
     public int index = 0;
 
@@ -208,57 +81,12 @@ public class DownloadManager {
         file.setDownloadDate(downloadDate);
 
         this.index = this.index + 1;
-        DownloadThread thread = new DownloadThread(file, this);
+        ThreadOfDownloading thread = new ThreadOfDownloading(file, this);
         thread.setDownloadSpeed(1024*1024);
         this.currentDownloadThread = thread;
         this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
         thread.start();
     }
-
-    @FXML
-    void btnDownloadLinkViaFirefox(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\" " + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaGoogle(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaIE(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaOpera(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Users\\shepe\\AppData\\Local\\Programs\\Opera\\launcher.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     void pauseButtonClicked(ActionEvent event) {
         if (currentDownloadThread != null) {
@@ -271,24 +99,6 @@ public class DownloadManager {
         if (currentDownloadThread != null) {
             currentDownloadThread.resumeDownload();
         }
-    }
-
-
-    @FXML
-    void btnOpenBrowsers(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("openBrowsers.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) openBrowsers.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-
-
-    @FXML
-    void changeLocationButtonClicked(ActionEvent event) {
-        new FileTransferLogin();
     }
 
     public void updateUI(FileInfo metaFile) {
