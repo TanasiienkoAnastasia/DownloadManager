@@ -1,4 +1,4 @@
-package org.example.DownloadManager.Command.ReceiverClasses;
+package org.example.DownloadManager.CommandOpenBrowsers.ReceiverClasses;
 
 public interface FileSystemReceiver {
     void launchGoogle();
