@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="58.0" prefWidth="417.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.Command.openBrowsers">
+    <children>
+          <Hyperlink fx:id="googleLink" layoutX="322.0" layoutY="19.0" onAction="#openGoogleLink" text="Google" textFill="#2cc457">
+              <font>
+                  <Font size="21.0" />
+              </font>
+          </Hyperlink>
+          <Hyperlink fx:id="firefoxLink" layoutX="242.0" layoutY="22.0" onAction="#openFirefoxLink" text="Firefox" textFill="#ec9317">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Hyperlink>
+          <Hyperlink fx:id="internetExplorerLink" layoutX="103.0" layoutY="22.0" onAction="#openInternetExplorerLink" text="InternetExplorer" textFill="#2526e5">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Hyperlink>
+          <Hyperlink fx:id="operaLink" layoutX="40.0" layoutY="22.0" onAction="#openOperaLink" text="Opera" textFill="#dc0f0f">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Hyperlink>
+    </children>
+</AnchorPane>

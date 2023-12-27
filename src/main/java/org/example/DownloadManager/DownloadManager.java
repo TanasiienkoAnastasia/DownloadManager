@@ -3,10 +3,11 @@ package org.example.DownloadManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.example.DownloadManager.models.FileInfo;
 import views.FileTransferLogin;
 
@@ -22,6 +23,8 @@ import java.util.Date;
 
 public class DownloadManager {
 
+    @FXML
+    private Button openBrowsers;
     @FXML
     private TableView<FileInfo> tableView;
 
@@ -270,7 +273,17 @@ public class DownloadManager {
     }
 
 
-  
+    @FXML
+    void btnOpenBrowsers(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("openBrowsers.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) openBrowsers.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 
     @FXML
     void changeLocationButtonClicked(ActionEvent event) {

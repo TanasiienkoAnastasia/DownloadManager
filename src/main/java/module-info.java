@@ -14,4 +14,5 @@ module org.example {
     exports views;
     exports org.example.DownloadManager;
     opens org.example.DownloadManager to javafx.fxml;
+    opens org.example.DownloadManager.Command to javafx.fxml;
 }
