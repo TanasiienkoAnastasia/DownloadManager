@@ -7,14 +7,19 @@ public class Editor {
     public EventManager events;
 
     public Editor() {
-        this.events = new EventManager("pause", "resume");
+        this.events = new EventManager("pause", "resume", "start");
     }
 
-    public void pauseFile(String url) {
+    public void pauseDownload(String url) {
+
         events.notify("pause");
     }
 
-    public void resumeFile(String url) throws Exception {
+    public void resumeDownload(String url) throws Exception {
         events.notify("resume");
+    }
+
+    public void startDownload(String url) throws Exception {
+        events.notify("start");
     }
 }

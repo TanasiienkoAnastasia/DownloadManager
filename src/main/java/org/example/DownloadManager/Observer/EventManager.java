@@ -15,11 +15,6 @@ public class EventManager {
         }
     }
 
-    public void subscribe(String eventType, EventListener listener) {
-        List<EventListener> users = listeners.get(eventType);
-        users.add(listener);
-    }
-
 
     public void notify(String eventType) {
         List<EventListener> users = listeners.get(eventType);
