@@ -42,6 +42,12 @@ public class ThreadOfDownloading extends Thread{
         }
     }
 
+    private double calculateDownloadPercentage() {
+        if (file.getFilesize() <= 0) {
+            return 0; // To handle cases where file size is unknown or not set
+        }
+        return (double) bytesDownloadedSinceLastUpdate / file.getFilesize() * 100;
+    }
     @Override
     public void run() {
         this.file.setStatus("DOWNLOADING");
@@ -104,6 +110,9 @@ public class ThreadOfDownloading extends Thread{
                         }
                         bytesDownloadedSinceLastUpdate = 0;
                         startTime = currentTime;
+                        double percentage = calculateDownloadPercentage();
+                        file.setPer(String.format("%.2f", percentage)); // Formatting to 2 decimal places
+                        controller.setCurrentFileInfo(file);
                     }
                 }
             }

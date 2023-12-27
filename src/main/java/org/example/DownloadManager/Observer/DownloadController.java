@@ -15,16 +15,41 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class DownloadController {
+public class DownloadController implements DownloadSubject{
 
     @FXML
     private TextField urlTextField;
     private ThreadOfDownloading currentDownloadThread;
     @FXML
     private TableView<FileInfo> tableView;
+    private FileInfo currentFileInfo; // Represents the current state of the download
 
+    public void setCurrentFileInfo(FileInfo fileInfo) {
+        this.currentFileInfo = fileInfo;
+        notifyObservers(); // Notify observers whenever the current file info changes
+    }
+    private List<DownloadObserver> observers = new ArrayList<>();
+
+    @Override
+    public void registerObserver(DownloadObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(DownloadObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (DownloadObserver observer : observers) {
+            observer.update(currentFileInfo); // currentFileInfo is the current state of the download
+        }
+    }
 
 
     public int index = 0;
@@ -188,5 +213,8 @@ public class DownloadController {
         downloadDateColumn.setCellValueFactory(p -> p.getValue().downloadDateProperty());
 
         this.tableView.getColumns().addAll(fileTypeColumn, downloadDateColumn);
+
+        DownloadObserver observer = new DownloadProgressObserver(this);
+        registerObserver(observer);
     }
 }

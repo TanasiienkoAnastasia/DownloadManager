@@ -16,6 +16,7 @@ public class FileInfo {
     private SimpleStringProperty fileType = new SimpleStringProperty(); // Додано поле для типу файлу
     private SimpleStringProperty downloadDate = new SimpleStringProperty(); // Додано поле для дати завантаження
 
+
     public FileInfo(String index, String name, String url, String status, String action, String path, String per, long filesize) {
         this.index.set(index);
         this.name.set(name);
