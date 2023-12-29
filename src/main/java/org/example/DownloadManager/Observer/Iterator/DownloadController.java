@@ -94,12 +94,26 @@ public class DownloadController implements DownloadSubject {
         return "Unknown";
     }
 
-    // Додайте метод для отримання поточної дати у форматі "dd/MM/yyyy HH:mm:ss"
     private String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date currentDate = new Date();
         return dateFormat.format(currentDate);
     }
+
+    @FXML
+    void pauseButtonClicked(ActionEvent event) {
+        if (currentDownloadThread != null) {
+            currentDownloadThread.pauseDownload();
+        }
+    }
+
+    @FXML
+    void resumeButtonClicked(ActionEvent event) {
+        if (currentDownloadThread != null) {
+            currentDownloadThread.resumeDownload();
+        }
+    }
+
     @FXML
     void downloadButtonClicked(ActionEvent event) {
         String url = urlTextField.getText().trim();
@@ -132,30 +146,6 @@ public class DownloadController implements DownloadSubject {
         masterQueue.execute();
     }
 
-    public void processDownloadQueue() {
-        Iterator<FileInfo> iterator = downloadQueue.iterator();
-        while (iterator.hasNext()) {
-            FileInfo file = iterator.next();
-            iterator.remove();
-        }
-    }
-
-
-
-
-    @FXML
-    void pauseButtonClicked(ActionEvent event) {
-        if (currentDownloadThread != null) {
-            currentDownloadThread.pauseDownload();
-        }
-    }
-
-    @FXML
-    void resumeButtonClicked(ActionEvent event) {
-        if (currentDownloadThread != null) {
-            currentDownloadThread.resumeDownload();
-        }
-    }
 
     public void updateUI(FileInfo metaFile) {
         System.out.println(metaFile);

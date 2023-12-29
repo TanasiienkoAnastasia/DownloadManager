@@ -15,7 +15,7 @@ public abstract class AbstractDownloadThread extends Thread {
     private long lastUpdateTime;
     private long bytesDownloadedSinceLastUpdate;
     private volatile boolean downloadFailed = false;
-    private volatile boolean paused = false;
+    public volatile boolean paused = false;
 
     protected FileInfo file;
     protected DownloadController controller;

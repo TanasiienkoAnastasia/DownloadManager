@@ -14,11 +14,9 @@ module org.example {
     exports views;
     exports org.example.DownloadManager;
     opens org.example.DownloadManager to javafx.fxml;
-    opens org.example.DownloadManager.Chart to javafx.fxml;
     opens org.example.DownloadManager.CommandOpenBrowsers to javafx.fxml;
     opens org.example.DownloadManager.CommandDownloadViaBrowser to javafx.fxml;
     exports org.example.DownloadManager.Observer;
-    exports org.example.DownloadManager.Chart;
     opens org.example.DownloadManager.Observer to javafx.fxml;
     exports org.example.DownloadManager.Observer.TemplateMethod;
     opens org.example.DownloadManager.Observer.TemplateMethod to javafx.fxml;

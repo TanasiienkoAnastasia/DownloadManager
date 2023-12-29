@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("downloadManager.fxml"));
         primaryStage.setTitle("downloadManager");
-        primaryStage.setScene(new Scene(root,2000, 2000));
+        primaryStage.setScene(new Scene(root,1000, 700));
         primaryStage.show();
     }
 

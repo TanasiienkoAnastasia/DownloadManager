@@ -10,7 +10,6 @@ public class ThreadOfDownloading extends AbstractDownloadThread {
     private long lastUpdateTime;
     private long bytesDownloadedSinceLastUpdate;
     private volatile boolean downloadFailed = false;
-    private volatile boolean paused = false;
     public ThreadOfDownloading(FileInfo file, DownloadController controller) {
         super(file, controller);
     }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="58.0" prefWidth="417.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.CommandOpenBrowsers.openBrowsers">
+<AnchorPane prefHeight="40.0" prefWidth="417.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.CommandOpenBrowsers.openBrowsers">
     <children>
           <Hyperlink fx:id="googleLink" layoutX="322.0" layoutY="19.0" onAction="#openGoogleLink" text="Google" textFill="#2cc457">
               <font>

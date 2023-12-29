@@ -5,14 +5,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="175.0" prefWidth="814.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.DownloadManager.CommandDownloadViaBrowser.downloadViaBrowsers">
+<AnchorPane prefHeight="116.0" prefWidth="774.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.CommandDownloadViaBrowser.downloadViaBrowsers">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Button layoutX="22.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaFirefox" style="-fx-background-color: #FFD580;" text="Download ur via firefox" />
-      <Button layoutX="381.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaIE" style="-fx-background-color: #67B7D1;" text="Download url via ie" />
-      <Button layoutX="537.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaGoogle" style="-fx-background-color: #90EE90;" text="Download url via google" />
-      <Button layoutX="200.0" layoutY="103.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaOpera" style="-fx-background-color: #FF7F7F;" text="Download url via opera" />
-      <TextField fx:id="urlTextField" alignment="CENTER" layoutX="22.0" layoutY="41.0" prefHeight="26.0" prefWidth="746.0" promptText="Enter download URL here ....." />
+      <Button layoutX="22.0" layoutY="77.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaFirefox" style="-fx-background-color: #FFD580;" text="Download ur via firefox" />
+      <Button layoutX="375.0" layoutY="77.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaIE" style="-fx-background-color: #67B7D1;" text="Download url via ie" />
+      <Button layoutX="529.0" layoutY="77.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaGoogle" style="-fx-background-color: #90EE90;" text="Download url via google" />
+      <Button layoutX="208.0" layoutY="77.0" mnemonicParsing="false" onAction="#btnDownloadLinkViaOpera" style="-fx-background-color: #FF7F7F;" text="Download url via opera" />
+      <TextField fx:id="urlTextField" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="26.0" prefWidth="746.0" promptText="Enter download URL here ....." />
    </children>
 </AnchorPane>
