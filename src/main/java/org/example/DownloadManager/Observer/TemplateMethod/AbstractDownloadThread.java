@@ -1,6 +1,6 @@
-package org.example.DownloadManager.Observer;
+package org.example.DownloadManager.Observer.TemplateMethod;
 
-import org.example.DownloadManager.DownloadManager;
+import org.example.DownloadManager.Observer.DownloadController;
 import org.example.DownloadManager.models.FileInfo;
 
 import java.io.BufferedInputStream;
@@ -9,38 +9,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class ThreadOfDownloading extends Thread{
-    public FileInfo file;
+public abstract class AbstractDownloadThread extends Thread {
     private static final int MAX_DOWNLOAD_SPEED = 1024 * 1024;
     private long downloadSpeedLimit = Long.MAX_VALUE;
     private long lastUpdateTime;
     private long bytesDownloadedSinceLastUpdate;
     private volatile boolean downloadFailed = false;
-    DownloadController controller;
-
     private volatile boolean paused = false;
 
-    public ThreadOfDownloading(FileInfo file, DownloadController controller) {
+    protected FileInfo file;
+    protected DownloadController controller;
+
+    public AbstractDownloadThread(FileInfo file, DownloadController controller) {
         this.file = file;
         this.controller = controller;
     }
 
-    public void pauseDownload() {
-        paused = true;
-    }
-
-    public void resumeDownload() {
-        paused = false;
-    }
-
-    public void setDownloadSpeed(long speedLimit) {
-        if (speedLimit > 0) {
-            downloadSpeedLimit = speedLimit;
-        } else {
-            // Якщо передане обмеження є від'ємним або нульовим, встановіть без обмеження
-            downloadSpeedLimit = Long.MAX_VALUE;
-        }
-    }
+    public abstract void pauseDownload();
+    public abstract void resumeDownload();
+    public abstract void setDownloadSpeed(long speedLimit);
 
     private double calculateDownloadPercentage() {
         if (file.getFilesize() <= 0) {
@@ -48,6 +35,7 @@ public class ThreadOfDownloading extends Thread{
         }
         return (double) bytesDownloadedSinceLastUpdate / file.getFilesize() * 100;
     }
+
     @Override
     public void run() {
         this.file.setStatus("DOWNLOADING");
@@ -130,4 +118,6 @@ public class ThreadOfDownloading extends Thread{
         }
         this.controller.updateUI(this.file);
     }
+
+
 }

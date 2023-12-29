@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -65,5 +66,7 @@
                <fx:include source="download.fxml" />
            </right>
        </BorderPane>
+       <PieChart fx:id="fileSizePieChart" layoutX="10" layoutY="10" prefHeight="400" prefWidth="400" />
+       <PieChart fx:id="fileTypePieChart" layoutX="420" layoutY="10" prefHeight="400" prefWidth="400" />
    </children>
 </AnchorPane>

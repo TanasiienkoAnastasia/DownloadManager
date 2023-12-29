@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("downloadViaBrowsers.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("downloadManager.fxml"));
         primaryStage.setTitle("downloadManager");
-        primaryStage.setScene(new Scene(root,814, 150));
+        primaryStage.setScene(new Scene(root,2000, 2000));
         primaryStage.show();
     }
 

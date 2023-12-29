@@ -3,11 +3,14 @@ package org.example.DownloadManager.Observer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.example.DownloadManager.AppConfig;
-import org.example.DownloadManager.DownloadThread;
+import org.example.DownloadManager.Observer.TemplateMethod.ThreadOfDownloading;
 import org.example.DownloadManager.models.FileInfo;
 
 import java.io.File;
@@ -15,11 +18,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 public class DownloadController implements DownloadSubject{
+    @FXML
+    private BarChart<String, Number> fileSizeChart;
 
     @FXML
     private TextField urlTextField;
@@ -111,7 +115,22 @@ public class DownloadController implements DownloadSubject{
         this.currentDownloadThread = thread;
         this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
         thread.start();
+
     }
+
+    private void updateChart() {
+        fileSizeChart.getData().clear();
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        for (FileInfo fileInfo : tableView.getItems()) {
+            String fileName = fileInfo.getName();
+            long fileSize = fileInfo.getFilesize();
+            series.getData().add(new XYChart.Data<>(fileName, fileSize / (1024.0 * 1024.0))); // Convert bytes to MB
+        }
+        fileSizeChart.getData().add(series);
+    }
+
+
     @FXML
     void pauseButtonClicked(ActionEvent event) {
         if (currentDownloadThread != null) {
@@ -216,5 +235,6 @@ public class DownloadController implements DownloadSubject{
 
         DownloadObserver observer = new DownloadProgressObserver(this);
         registerObserver(observer);
+
     }
 }
