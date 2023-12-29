@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,6 +11,7 @@ import javafx.scene.control.TextField;
 import org.example.DownloadManager.AppConfig;
 import org.example.DownloadManager.Observer.TemplateMethod.ThreadOfDownloading;
 import org.example.DownloadManager.models.FileInfo;
+
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -22,8 +22,13 @@ import java.util.*;
 
 
 public class DownloadController implements DownloadSubject{
+    private DownloadQueue downloadQueue = new DownloadQueue();
+
+
     @FXML
     private BarChart<String, Number> fileSizeChart;
+
+    private List<FileInfo> downloadedFiles = new ArrayList<>();
 
     @FXML
     private TextField urlTextField;
@@ -101,7 +106,6 @@ public class DownloadController implements DownloadSubject{
 
         long filesize = getFileSize(url); // Отримання розміру файлу
 
-        // Отримайте тип файлу та поточну дату
         String fileType = getFileType(filename);
         String downloadDate = getCurrentDate();
 
@@ -109,26 +113,26 @@ public class DownloadController implements DownloadSubject{
         file.setFileType(fileType);
         file.setDownloadDate(downloadDate);
 
+
         this.index = this.index + 1;
         ThreadOfDownloading thread = new ThreadOfDownloading(file, this);
         thread.setDownloadSpeed(1024*1024);
         this.currentDownloadThread = thread;
         this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
         thread.start();
-
+        downloadQueue.enqueue(file);
+        processDownloadQueue();
     }
 
-    private void updateChart() {
-        fileSizeChart.getData().clear();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        for (FileInfo fileInfo : tableView.getItems()) {
-            String fileName = fileInfo.getName();
-            long fileSize = fileInfo.getFilesize();
-            series.getData().add(new XYChart.Data<>(fileName, fileSize / (1024.0 * 1024.0))); // Convert bytes to MB
+    public void processDownloadQueue() {
+        Iterator<FileInfo> iterator = downloadQueue.iterator();
+        while (iterator.hasNext()) {
+            FileInfo file = iterator.next();
+            iterator.remove();
         }
-        fileSizeChart.getData().add(series);
     }
+
+
 
 
     @FXML
@@ -169,6 +173,7 @@ public class DownloadController implements DownloadSubject{
         }
         System.out.println("_________________________");
         tableView.refresh();
+
     }
 
     private String humanReadableByteCountBin(long bytes) {
@@ -235,6 +240,5 @@ public class DownloadController implements DownloadSubject{
 
         DownloadObserver observer = new DownloadProgressObserver(this);
         registerObserver(observer);
-
     }
 }
