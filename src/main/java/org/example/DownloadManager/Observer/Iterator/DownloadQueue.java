@@ -1,4 +1,4 @@
-package org.example.DownloadManager.Observer;
+package org.example.DownloadManager.Observer.Iterator;
 
 import org.example.DownloadManager.models.FileInfo;
 

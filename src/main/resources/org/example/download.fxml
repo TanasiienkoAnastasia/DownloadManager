@@ -8,7 +8,7 @@
 
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
-<AnchorPane prefHeight="212.0" prefWidth="893.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.Observer.DownloadController">
+<AnchorPane prefHeight="212.0" prefWidth="893.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DownloadManager.Observer.Iterator.DownloadController">
    <children>
       <Button fx:id="btnPause" layoutX="815.0" layoutY="106.0" mnemonicParsing="false" onAction="#pauseButtonClicked" prefHeight="26.0" prefWidth="58.0" style="-fx-background-color: #ec9317;" text="Pause" />
       <Button fx:id="btnResume" layoutX="815.0" layoutY="69.0" mnemonicParsing="false" onAction="#resumeButtonClicked" style="-fx-background-color: #ffb6c1;" text="Resume" />

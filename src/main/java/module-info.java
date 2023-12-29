@@ -22,4 +22,6 @@ module org.example {
     opens org.example.DownloadManager.Observer to javafx.fxml;
     exports org.example.DownloadManager.Observer.TemplateMethod;
     opens org.example.DownloadManager.Observer.TemplateMethod to javafx.fxml;
+    exports org.example.DownloadManager.Observer.Iterator;
+    opens org.example.DownloadManager.Observer.Iterator to javafx.fxml;
 }

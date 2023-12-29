@@ -1,6 +1,7 @@
 package org.example.DownloadManager.Observer;
 
 import javafx.application.Platform;
+import org.example.DownloadManager.Observer.Iterator.DownloadController;
 import org.example.DownloadManager.models.FileInfo;
 
 public class DownloadProgressObserver implements DownloadObserver{

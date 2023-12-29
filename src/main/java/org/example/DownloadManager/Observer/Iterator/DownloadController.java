@@ -1,14 +1,17 @@
-package org.example.DownloadManager.Observer;
+package org.example.DownloadManager.Observer.Iterator;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.example.DownloadManager.AppConfig;
+import org.example.DownloadManager.Observer.DownloadObserver;
+import org.example.DownloadManager.Observer.DownloadProgressObserver;
+import org.example.DownloadManager.Observer.DownloadSubject;
+import org.example.DownloadManager.Observer.Iterator.DownloadQueue;
 import org.example.DownloadManager.Observer.TemplateMethod.ThreadOfDownloading;
 import org.example.DownloadManager.models.FileInfo;
 
@@ -21,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class DownloadController implements DownloadSubject{
+public class DownloadController implements DownloadSubject {
     private DownloadQueue downloadQueue = new DownloadQueue();
 
 

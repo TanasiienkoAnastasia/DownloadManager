@@ -1,6 +1,6 @@
 package org.example.DownloadManager.Observer.TemplateMethod;
 
-import org.example.DownloadManager.Observer.DownloadController;
+import org.example.DownloadManager.Observer.Iterator.DownloadController;
 import org.example.DownloadManager.models.FileInfo;
 
 import java.io.BufferedInputStream;
