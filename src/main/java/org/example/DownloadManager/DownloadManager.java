@@ -25,11 +25,6 @@ public class DownloadManager {
 
 
     @FXML
-    private Button openBrowsers;
-    @FXML
-    private TableView<FileInfo> tableView;
-
-    @FXML
     private TextField urlTextField;
 
     @FXML
@@ -44,8 +39,6 @@ public class DownloadManager {
     @FXML
     private Hyperlink operaLink;
 
-    private DownloadThread currentDownloadThread;
-
 
     public void launchFirefox(){
         try{
@@ -58,14 +51,6 @@ public class DownloadManager {
         {
             ie.printStackTrace();
         }
-    }
-
-    public long getTotalSizeOfFiles() {
-        long totalSize = 0;
-        for (FileInfo file : tableView.getItems()) {
-            totalSize += file.getFilesize();
-        }
-        return totalSize;
     }
 
     @FXML
@@ -189,100 +174,8 @@ public class DownloadManager {
         Date currentDate = new Date();
         return dateFormat.format(currentDate);
     }
-    @FXML
-    void downloadButtonClicked(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        String filename = url.substring(url.lastIndexOf("/") + 1);
-        String status = "STARTING";
-        String action = "OPEN";
-        String path = AppConfig.DOWNLOAD_PATH + File.separator + filename;
-
-        long filesize = getFileSize(url); // Отримання розміру файлу
-
-        // Отримайте тип файлу та поточну дату
-        String fileType = getFileType(filename);
-        String downloadDate = getCurrentDate();
-
-        FileInfo file = new FileInfo((index + 1) + "", filename, url, status, action, path, "0", filesize);
-        file.setFileType(fileType);
-        file.setDownloadDate(downloadDate);
-
-        this.index = this.index + 1;
-        DownloadThread thread = new DownloadThread(file, this);
-        thread.setDownloadSpeed(1024*1024);
-        this.currentDownloadThread = thread;
-        this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
-        thread.start();
-    }
-
-    @FXML
-    void btnDownloadLinkViaFirefox(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\" " + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaGoogle(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaIE(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void btnDownloadLinkViaOpera(ActionEvent event) {
-        String url = urlTextField.getText().trim();
-        try {
-            String command = "\"C:\\Users\\shepe\\AppData\\Local\\Programs\\Opera\\launcher.exe\"" + url;
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void pauseButtonClicked(ActionEvent event) {
-        if (currentDownloadThread != null) {
-            currentDownloadThread.pauseDownload();
-        }
-    }
-
-    @FXML
-    void resumeButtonClicked(ActionEvent event) {
-        if (currentDownloadThread != null) {
-            currentDownloadThread.resumeDownload();
-        }
-    }
 
 
-    @FXML
-    void btnOpenBrowsers(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("openBrowsers.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) openBrowsers.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
 
 
@@ -291,92 +184,11 @@ public class DownloadManager {
         new FileTransferLogin();
     }
 
-    public void updateUI(FileInfo metaFile) {
-        System.out.println(metaFile);
-        try {
-            int index = Integer.parseInt(metaFile.getIndex()) - 1;
-            if (index >= 0 && index < this.tableView.getItems().size()) {
-                FileInfo fileInfo = this.tableView.getItems().get(index);
-                fileInfo.setStatus(metaFile.getStatus());
-                String perValue = metaFile.getPer().replace(',', '.');
-                try {
-                    double parsedPer = Double.parseDouble(perValue);
-                    DecimalFormat decimalFormat = new DecimalFormat("0.0");
-                    fileInfo.setPer(decimalFormat.format(parsedPer));
-                } catch (NumberFormatException e) {
-                    System.err.println("Error parsing 'per' value: " + perValue);
-                }
-                this.tableView.refresh();
-            } else {
-                System.err.println("Invalid index: " + metaFile.getIndex());
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Error parsing 'index' value: " + metaFile.getIndex());
-        }
-        System.out.println("_________________________");
-        tableView.refresh();
-    }
 
     private String humanReadableByteCountBin(long bytes) {
         if (bytes < 1024) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(1024));
         char pre = "KMGTPE".charAt(exp - 1);
         return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
-    }
-
-
-    @FXML
-    public void initialize() {
-        System.out.println("View initialized");
-
-
-        TableColumn<FileInfo, String> sn = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(0);
-        sn.setCellValueFactory(p -> {
-            return p.getValue().indexProperty();
-        });
-
-        TableColumn<FileInfo, String> filename = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(1);
-        filename.setCellValueFactory(p -> {
-            return p.getValue().nameProperty();
-        });
-
-        TableColumn<FileInfo, String> url = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(2);
-        url.setCellValueFactory(p -> {
-            return p.getValue().urlProperty();
-        });
-
-        TableColumn<FileInfo, String> status = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(3);
-        status.setCellValueFactory(p -> {
-            return p.getValue().statusProperty();
-        });
-
-        TableColumn<FileInfo, String> per = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(4);
-        per.setCellValueFactory(p -> {
-            SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
-            simpleStringProperty.set(p.getValue().getPer() + " %");
-            return simpleStringProperty;
-        });
-
-        TableColumn<FileInfo, String> action = (TableColumn<FileInfo, String>) this.tableView.getColumns().get(5);
-        action.setCellValueFactory(p -> {
-            return p.getValue().actionProperty();
-        });
-
-        TableColumn<FileInfo, String> fileSizeColumn = new TableColumn<>("File Size");
-        fileSizeColumn.setCellValueFactory(p -> {
-            long size = p.getValue().getFilesize();
-            String sizeString = size >= 0 ? humanReadableByteCountBin(size) : "Unknown";
-            return new SimpleStringProperty(sizeString);
-        });
-
-        this.tableView.getColumns().add(fileSizeColumn);
-
-        TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>("File Type");
-        fileTypeColumn.setCellValueFactory(p -> p.getValue().fileTypeProperty());
-
-        TableColumn<FileInfo, String> downloadDateColumn = new TableColumn<>("Date");
-        downloadDateColumn.setCellValueFactory(p -> p.getValue().downloadDateProperty());
-
-        this.tableView.getColumns().addAll(fileTypeColumn, downloadDateColumn);
     }
 }
