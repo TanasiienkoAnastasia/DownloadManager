@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.example.DownloadManager.AppConfig;
+import org.example.DownloadManager.Observer.Composite.DownloadTask;
 import org.example.DownloadManager.Observer.DownloadObserver;
 import org.example.DownloadManager.Observer.DownloadProgressObserver;
 import org.example.DownloadManager.Observer.DownloadSubject;
@@ -26,7 +27,7 @@ import java.util.*;
 
 public class DownloadController implements DownloadSubject {
     private DownloadQueue downloadQueue = new DownloadQueue();
-
+    private DownloadQueue downloadQueue2 = new DownloadQueue();
 
     @FXML
     private BarChart<String, Number> fileSizeChart;
@@ -123,8 +124,12 @@ public class DownloadController implements DownloadSubject {
         this.currentDownloadThread = thread;
         this.tableView.getItems().add(Integer.parseInt(file.getIndex()) - 1, file);
         thread.start();
-        downloadQueue.enqueue(file);
-        processDownloadQueue();
+        downloadQueue.addTask((DownloadTask) file);
+        downloadQueue2.addTask((DownloadTask) file);
+        DownloadQueue masterQueue = new DownloadQueue();
+        masterQueue.addTask(downloadQueue);
+        masterQueue.addTask(downloadQueue2);
+        masterQueue.execute();
     }
 
     public void processDownloadQueue() {

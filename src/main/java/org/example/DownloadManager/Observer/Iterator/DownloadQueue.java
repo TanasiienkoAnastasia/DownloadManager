@@ -1,12 +1,11 @@
 package org.example.DownloadManager.Observer.Iterator;
 
+import org.example.DownloadManager.Observer.Composite.DownloadTask;
 import org.example.DownloadManager.models.FileInfo;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-class DownloadQueue implements Iterable<FileInfo> {
+class DownloadQueue implements Iterable<FileInfo>, DownloadTask {
     private Queue<FileInfo> queue = new LinkedList<>();
 
     public void enqueue(FileInfo file) {
@@ -38,6 +37,19 @@ class DownloadQueue implements Iterable<FileInfo> {
                 throw new IllegalStateException("Queue is empty");
             }
             return queue.poll();
+        }
+    }
+
+    private List<DownloadTask> tasks = new ArrayList<>();
+
+    public void addTask(DownloadTask task) {
+        tasks.add(task);
+    }
+
+    @Override
+    public void execute() {
+        for (DownloadTask task : tasks) {
+            task.execute();
         }
     }
 }
